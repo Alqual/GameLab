@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head lang="ja">
+<meta charset="UTF-8">
+<title>スマホのタッチイベントで画像の拡大・縮小・移動</title>
+ 
+<script>
+function BodyOnLoad() {
+ 
+    var ratio=1;
+    var w = document.getElementById('test').width;
+    var h = document.getElementById('test').height;
+    document.getElementById('test').style.position = 'fixed';
+    document.getElementById('test').style.left = '10px';
+    document.getElementById('test').style.top = '10px';
+ 
+    var touchstart_bar = 0;
+    var touchmove_bar = 0;
+    var touchstart_flg = false;
+    el = window;
+     
+    //タッチの場合
+    el.addEventListener('touchstart',function(e){
+        touchstart_bar = 0;
+        touchmove_bar = 0;
+        //2本指だったらAndroidではgesturestartは使えない
+        if(e.touches.length > 1){
+            //絶対値を取得
+            w_abs_start = Math.abs(e.touches[1].pageX - e.touches[0].pageX);
+            h_abs_start = Math.abs(e.touches[1].pageY - e.touches[0].pageY);
+            //はじめに2本指タッチした時の面積
+            touchstart_bar = w_abs_start*h_abs_start;
+        }
+    },false);
+     
+    //画像を一本指でタッチした場合だけ画像を動かす
+    document.getElementById('test').addEventListener('touchstart',function(e){
+        if(e.touches.length == 1)touchstart_flg = true;
+    },false);
+ 
+    //ムーブの場合
+    el.addEventListener('touchmove', function(e) {
+        //2本指だったらAndroidではgesturestartは使えない
+        if(e.touches.length > 1){
+            //絶対値を取得
+            w_abs_move = Math.abs(e.touches[1].pageX - e.touches[0].pageX);
+            h_abs_move = Math.abs(e.touches[1].pageY - e.touches[0].pageY);
+            //ムーブした時の面積
+            touchmove_bar = w_abs_move*h_abs_move;
+            //はじめに2タッチ面積からムーブした時の面積を引く
+            area_bar = touchstart_bar-touchmove_bar;
+            if(area_bar<0){//拡大する
+                ratio *= 1.1;
+            }
+            else if(area_bar>0){//縮小する
+                //if(ratio>0.1)ratio *= 0.9;
+                ratio *= 0.9;
+            }
+            document.getElementById('test').width = w*ratio;
+            document.getElementById('test').height = h*ratio;
+        }
+        else if(touchstart_flg){
+            var move_x = e.touches[0].pageX-(w*ratio)/2;
+            var move_y = e.touches[0].pageY-(h*ratio)/2;
+            document.getElementById('test').style.position = 'fixed';
+            document.getElementById('test').style.left = String(move_x)+'px';
+            document.getElementById('test').style.top = String(move_y)+'px';
+        }
+    });
+     
+    //タッチの終了
+    el.addEventListener('touchend',function(e){
+        touchstart_flg = false;
+    },false);
+    //タッチの中断
+    el.addEventListener('touchcancel',function(e){
+        touchstart_flg = false;
+    },false);
+}
+</script>
+</head>
+<body onLoad="BodyOnLoad()">
+<img id="test" src="./neko.jpg" />
+</body>
+</html>

@@ -1,0 +1,79 @@
+<asp:CreateUserWizard runat="server"> <WizardSteps> <asp:CreateUserWizardStep runat="server" /> <asp:CompleteWizardStep runat="server" /> </WizardSteps> </asp:CreateUserWizard>  <html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+      </script>
+    <script type="text/javascript"> 
+
+        ////////////////////////////
+        
+        
+        // 該当名(url)の csvファイルをchartデータとして整形
+        function getChart() { //CSVファイルを文字列で取得。
+            return new Promise((resolve, reject) => {
+            var req = new XMLHttpRequest(); // HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成、サーバと非同期通信するためのAPI
+            req.open("get", "sample_.csv", true); // アクセスするファイルを指定
+            req.onload = () => {
+              if (req.readyState === 4 && req.status === 0) {
+                  
+                  
+                  function drawChart(data, option) {
+                      /*var data =
+                          google.visualization.arrayToDataTable(convertCSVtoArray(req.responseText)); */
+                      var data = google.visualization.arrayToDataTable(
+                          [
+                              ['Year', 'Sales', 'Expenses'],
+                              ['2004',  1000,      400],
+                              ['2005',  1170,      460],
+                              ['2006',  660,       1120],
+                              ['2007',  1030,      540]
+                          ]);
+                      var options = {
+                          title: 'Company Performance',
+                          curveType: 'function',
+                          legend: { position: 'bottom' }
+                      };
+                      var chart = new
+                      google.visualization.LineChart(document.getElementById('curve_chart'));
+                      chart.draw(data, options);
+                  };
+                  
+                  google.charts.load('current', {'packages':['corechart']});
+                  google.charts.setOnLoadCallback(drawChart);
+   
+              } else {
+                reject(new Error(req.statusText));
+              }
+            };
+            req.onerror = () => {
+              reject(new Error(req.statusText));
+            };
+            req.send(null); // HTTPリクエストの発行
+          });
+        
+// 読み込んだCSVデータを二次元配列に変換する関数convertCSVtoArray()の定義
+        function convertCSVtoArray(str){ // 読み込んだCSVデータが文字列として渡される
+          var result = []; // 最終的な二次元配列を入れるための配列
+          var tmp = str.split("\n"); // 改行を区切り文字として行を要素とした配列を生成
+
+          // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
+          for(var i=0;i<tmp.length;++i){
+              result[i] = tmp[i].split(',');
+          }
+            alert(result[0][1])
+            
+            var data_csv =  google.visualization.arrayToDataTable(result);
+            drawChart(data,option);
+            //Google chartに関する設定//
+            //return result;
+        };
+            
+        };
+        getChart();
+
+     
+    </script>
+  </head>
+  <body>
+    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+/* container */
+.wrapper{
+    width:100%;
+}
+.wrapper .container{
+    max-width:1000px;
+    margin:0px auto;
+    padding:80px 0px;
+}
+/* content */
+.wrapper .content {
+    padding:50px;
+    text-align:center;
+}
+.wrapper .content .heading{
+    margin:0px 0px 40px 0px;
+    font-size: 72px;
+    font-weight: normal;
+    text-align: center;
+    color:#ffffff;
+}
+
+.wrapper .content .canvas{
+    /*margin:0px 0px 40px 0px;*/
+    position: absolute;
+    top: 0%;
+    left: 47.5%;
+}
+
+
+.wrapper .content .answer{
+    margin:0px 0px 40px 0px;
+    font-size: 36px;
+    font-weight: normal;
+    text-align: center;
+    position: absolute;
+    top: 95%;
+    left: 47.5%;
+}
+
+/*挿入画像に関する設定 */
+.wrapper .content .item1{
+    position: absolute;
+    top: 35%;
+    left: 60%;
+    color:#ffffff;
+    transition: transform .3s;
+}
+
+
+.wrapper .content .item1 img{
+    width:  100px;
+    height: 100px;
+}
+
+.item1:hover {
+  cursor: zoom-in;
+}
+
+.item1.scale2{
+  transform: scale(1.5, 1.5);
+}
+
+.item1.scale2:hover {
+  cursor: zoom-out;
+}
+
+
+.wrapper .content .item2{
+    position: absolute;
+    top: 35%;
+    left: 75%;
+    color:#ffffff;
+}
+
+.wrapper .content .item2 img{
+    width:  10%;
+    height: 10%;
+}
+
+.wrapper .content .item3{
+    position: absolute;
+    top: 65%;
+    left: 60%;
+    color:#ffffff;
+}
+
+
+.wrapper .content .item3 img{
+    width:  10%;
+    height: 10%;
+}
+
+.wrapper .content .item4{
+    position: absolute;
+    top: 65%;
+    left: 75%;
+    color:#ffffff;
+}
+
+.wrapper .content .item4 img{
+    width:  10%;
+    height: 10%;
+}
